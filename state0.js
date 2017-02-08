@@ -5,7 +5,7 @@ var adam, speed = 6;
 demo.state0 = function () {};
 demo.state0.prototype = {
     preload: function () {
-        game.load.image('adam', 'assets/sprites/adam.png');
+        game.load.spritesheet('adam', 'assets/spritesheets/adamSheet.png', 240, 370);
         game.load.image('tree', 'assets/backgrounds/treeBG.png');
     }
     , create: function () {
@@ -23,6 +23,7 @@ demo.state0.prototype = {
         adam.scale.setTo(0.7, 0.7);
         game.physics.enable(adam);
         adam.body.collideWorldBounds = true;
+        adam.animations.add('walk', [0, 1, 2, 3, 4]);
         
         game.camera.follow(adam);
         game.camera.deadzone = new Phaser.Rectangle(centerX - 300, 0, 600, 1000);
@@ -31,10 +32,16 @@ demo.state0.prototype = {
         if(game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)){
             adam.scale.setTo(0.7, 0.7);
             adam.x += speed;
+            adam.animations.play('walk', 14, true);
         }
         else if(game.input.keyboard.isDown(Phaser.Keyboard.LEFT)){
             adam.scale.setTo(-0.7, 0.7);
             adam.x -= speed;
+            adam.animations.play('walk', 14, true);
+        }
+        else{
+            adam.animations.stop('walk');
+            adam.frame = 0;
         }
         if(game.input.keyboard.isDown(Phaser.Keyboard.UP)){
             adam.y -= speed;
